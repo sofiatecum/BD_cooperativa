@@ -67,5 +67,13 @@ DROP COLUMN descripcion,
 DROP COLUMN debito,
 DROP COLUMN saldo;
 
+ALTER TABLE clientes
+ADD COLUMN tipo_cliente ENUM('individual', 'juridico') NOT NULL;
+
+ALTER TABLE cuentas_monetarias
+DROP COLUMN tarjeta_debito,
+DROP COLUMN chequera,
+ADD COLUMN id_cliente INT NOT NULL,
+MODIFY COLUMN fecha_creacion DATETIME NOT NULL;
 -- -----------------------------------
 -- Nota: No se repiten aquí los cambios del script update catalogo para evitar redundancia, ya que ya se realizaron (si no se realizaron se pueden unir para usar un solo script
