@@ -1,0 +1,15 @@
+DELIMITER //
+CREATE PROCEDURE `registro_suarios`(IN p_nombre VARCHAR(100), IN p_telefono VARCHAR(20), 
+IN p_correo VARCHAR(100),IN p_nacimiento DATE, IN p_tipo VARCHAR(30),
+IN p_estado VARCHAR(30), IN p_contrasena VARCHAR(300)) -- se elimino el atributo"direccion_ip"
+BEGIN
+
+    IF EXISTS (SELECT 1 FROM cooperativa_db.usuarios WHERE correo_electronico = p_correo) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'El correo electrónico ya está registrado.';
+    END IF;
+
+	INSERT INTO cooperativa_db.usuarios(nombre, telefono, correo_electronico, fecha_nacimiento, tipo_usuario, estado, contrasena)
+    VALUES(p_nombre, p_telefono, p_correo, p_nacimiento, p_tipo, p_estado, sha1(p_contrasena));
+END //
+DELIMITER ;
